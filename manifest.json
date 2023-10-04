@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Soy Sauce",
+  "version": "1.0",
+  "description": "Blend up the beans and make some sauce.",
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/index.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://www.membean.com/*"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
