@@ -16,6 +16,7 @@
     {
       "js": ["scripts/content.js"],
       "matches": [
+        "https://membean.com/*",
         "https://www.membean.com/*"
       ],
       "run_at": "document_end"
