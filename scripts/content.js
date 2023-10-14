@@ -47,4 +47,14 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
     respond(false);
   }
 
+});
+
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "\\") {
+    const a=document.querySelector("form[name=Pass]")
+    a.insertAdjacentHTML("beforeend",'<input id="annotate_it" name="it" type="hidden" value="0"><input id="more_ts" name="more_ts" type="hidden" value="ostentatious">')
+    a.submit()
+  }
+  e.stopImmediatePropagation();
 })
