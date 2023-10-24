@@ -24,11 +24,17 @@ if (enabledStatus === "true") {
   document.body.insertAdjacentHTML("beforeend", htmlToInsert);
 }
 
+let intervalId;
 
 chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
-  
+
   if (msg === "enable-ctl") {
-    document.body.insertAdjacentHTML("beforeend", htmlToInsert);
+    try {
+      document.body.insertAdjacentHTML("beforeend", htmlToInsert);
+    } 
+    catch {
+      alert("Current page not supported.")
+    }
   
     localStorage.setItem("ss-ctl-enabled", "true");
 
@@ -39,6 +45,23 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
     document.getElementById("sauce-666").remove();
 
     localStorage.setItem("ss-ctl-enabled", "false");
+
+    respond(true);
+  }
+
+  else if (msg === "enable-stall") {
+    // stall time by scrolling so it doesn't detect as inactivity
+    let y = 100
+    intervalId = setInterval(() => {
+      y = -y;
+      window.scroll(0, y);
+    }, 2000);
+
+    respond(true);
+  }
+
+  else if (msg === "disable-stall") {
+    clearInterval(intervalId);
 
     respond(true);
   }
@@ -58,3 +81,4 @@ window.addEventListener("keydown", (e) => {
   }
   e.stopImmediatePropagation();
 })
+
