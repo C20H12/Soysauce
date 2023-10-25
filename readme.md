@@ -14,4 +14,4 @@ Because I don't want to spend the effort to upload it onto Google, here's the st
 - Download as ZIP, then unzip the file. Or clone the repo.
 - Goto [chrome://extensions/](chrome://extensions/) 
 - Top-right corner, enable "Developer mode"
-- Click "Load unpacked" and choose the folder the contains this extension.
+- Click "Load unpacked" and choose the folder that contains this extension.
