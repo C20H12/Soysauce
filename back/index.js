@@ -55,6 +55,7 @@ async function handleRequest(searchBy, searchString, type, res) {
     res.status(500).send({status: 400, message: 'Error executing query, ' + queryResult});
   }
   else {
+    res.set("Access-Control-Allow-Origin", "*");
     res.json(queryResult);
   }
 }
