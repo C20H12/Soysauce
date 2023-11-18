@@ -1,5 +1,6 @@
 const express = require('express');
 const query = require("./db");
+const cors = require("cors");
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use((err, _req, res, next) => {
   next();
 });
 
+// middleware to allow cross origin requests
+app.use(cors());
 
 async function handleRequest(searchBy, searchString, type, res) {
   if (searchBy.length === 0 || searchString.length === 0) {
