@@ -78,6 +78,7 @@ async function handleRequest(searchBy, searchString, type, res) {
  * }
  */
 app.post('/api/v1/query', async (req, res) => {
+  console.log(1)
   const body = req.body;
   await handleRequest(body.query.by, body.query.search, body.type, res);
 });
