@@ -1,67 +1,19 @@
-const htmlToInsert = `
-<style>
-  #sauce-666 {
-    position: absolute;
-    right: 5vw;
-    top: 10vh;
-    background-color: #7b3d3d;
-    padding: 1em;
-    border: 3px solid black;
-    border-radius: 15px;
-  }
-  #sauce-666:hover {
-    background-color: #008989;
-  }
-</style>
-<button id="sauce-666" onclick="const a=document.querySelector('form[name=Pass]');a.insertAdjacentHTML('beforeend',\`<input id='annotate_it' name='it' type='hidden' value='0'><input id='more_ts' name='more_ts' type='hidden' value='ostentatious'>\`);a.submit()">
-  Pour some sauce
-</button>
-`;
-
-// display the button if a storage item exists and is true
-const enabledStatus = localStorage.getItem("ss-ctl-enabled");
-if (enabledStatus === "true") {
-  document.body.insertAdjacentHTML("beforeend", htmlToInsert);
-}
-
-let intervalId;
 
 chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
 
   if (msg === "enable-ctl") {
     try {
-      document.body.insertAdjacentHTML("beforeend", htmlToInsert);
+      forceBypass();
     } 
     catch {
       alert("Current page not supported.")
     }
-  
-    localStorage.setItem("ss-ctl-enabled", "true");
-
-    respond(true);
-  }
-  
-  else if (msg === "disable-ctl") {
-    document.getElementById("sauce-666").remove();
-
-    localStorage.setItem("ss-ctl-enabled", "false");
 
     respond(true);
   }
 
-  else if (msg === "enable-stall") {
-    // stall time by scrolling so it doesn't detect as inactivity
-    let y = 100
-    intervalId = setInterval(() => {
-      y = -y;
-      window.scroll(0, y);
-    }, 2000);
-
-    respond(true);
-  }
-
-  else if (msg === "disable-stall") {
-    clearInterval(intervalId);
+  else if (msg === "enable-hl") {
+    highlight();
 
     respond(true);
   }
@@ -75,10 +27,52 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
 
 window.addEventListener("keydown", (e) => {
   if (e.key === "\\") {
-    const a=document.querySelector("form[name=Pass]")
-    a.insertAdjacentHTML("beforeend",'<input id="annotate_it" name="it" type="hidden" value="0"><input id="more_ts" name="more_ts" type="hidden" value="ostentatious">')
-    a.submit()
+    forceBypass();
   }
   e.stopImmediatePropagation();
 })
 
+function forceBypass() {
+  const a=document.querySelector("form[name=Pass]")
+  a.insertAdjacentHTML("beforeend",'<input id="annotate_it" name="it" type="hidden" value="0"><input id="more_ts" name="more_ts" type="hidden" value="ostentatious">')
+  a.submit()
+}
+
+function highlight() {
+  const qid = document.querySelector("[data-qid]")?.dataset.qid;
+  if (!qid) {
+    return;
+  }
+  fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/questions/?by=qid&search=${qid}`)
+  .then(res => res.json())
+  .then(q => {
+    const choices = document.querySelectorAll("li.choice");
+    if (choices.length === 0) {
+      alert(q[0]?.data.question.answer);
+    } else {
+      [...choices].forEach(choice => {
+        if (choice.innerText.toLowerCase() === q[0]?.data.question.answer.toLowerCase()) {
+          choice.style.backgroundColor = "#c6fbc8";
+        }
+      })
+    }
+  })
+}
+
+
+function cancelListener(e) {
+  e.stopImmediatePropagation();
+}
+
+const quizBody = document.querySelector("#assessment-iframe").contentDocument.querySelector("body");
+quizBody.addEventListener("contextmenu", cancelListener)
+quizBody.addEventListener("focus", cancelListener)
+quizBody.addEventListener("blur", cancelListener)
+quizBody.addEventListener("copy", cancelListener)
+quizBody.addEventListener("mousedown", cancelListener)
+quizBody.addEventListener("mouseup", cancelListener)
+quizBody.addEventListener("mouseout", cancelListener)
+quizBody.addEventListener("mouseover", cancelListener)
+
+
+// todo: document.querySelector("#assessment-iframe").contentDocument.querySelectorAll("ul > li:nth-child(1) input[value]")

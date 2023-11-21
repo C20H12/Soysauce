@@ -1,37 +1,21 @@
-// the checkbox behind the slider
-const enabledCheckbox = document.querySelector("input[type=checkbox]");
+// force bypass button
+const enabledCheckbox = document.querySelector("[data-ctl]");
 
-// stall checkbox
-const stallCheckbox= document.querySelector("[data-stall]");
+// highlighting button
+const hlBtn = document.querySelector("[data-hl]");
 
-// get the stored item and set the checkbox to the previously stored value
-// NOTE: The local storage of the popup is not the same as the page's
-const storedStatus = JSON.parse(localStorage.getItem("ss-status-storage"));
-enabledCheckbox.checked = storedStatus?.sauceBtn ?? false;
-stallCheckbox.checked = storedStatus?.stall ?? false;
 
-const statusToStore = {
-  sauceBtn: undefined,
-  stall: undefined,
-}
-
-// whenever the checkboxes are changed
-enabledCheckbox.addEventListener("change", async () => {
-  statusToStore.sauceBtn = enabledCheckbox.checked;
-  localStorage.setItem("ss-status-storage", JSON.stringify(statusToStore));
-
-  sendStatus(enabledCheckbox.checked, "ctl")
+// whenever the btns are clicked
+enabledCheckbox.addEventListener("click", async () => {
+  sendStatus("ctl")
 })
 
-stallCheckbox.addEventListener("change", async () => {
-  statusToStore.stall = stallCheckbox.checked;
-  localStorage.setItem("ss-status-storage", JSON.stringify(statusToStore));
-
-  sendStatus(stallCheckbox.checked, "stall")
+hlBtn.addEventListener("click", async () => {
+  sendStatus("hl");
 })
 
 
-async function sendStatus(action, name) {
+async function sendStatus(name) {
   // need to get the tab's id to send the message to
   const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
 
@@ -39,13 +23,7 @@ async function sendStatus(action, name) {
     return;
   }
 
-  let response;
-  if (action === true) {
-    response = await chrome.tabs.sendMessage(tab.id, `enable-${name}`);
-  }
-  else {
-    response = await chrome.tabs.sendMessage(tab.id, `disable-${name}`);
-  }
+  const response = await chrome.tabs.sendMessage(tab.id, `enable-${name}`);
 
   // should not happen but might happen
   if (!response) {
