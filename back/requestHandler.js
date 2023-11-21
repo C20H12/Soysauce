@@ -22,7 +22,7 @@ async function handleRequest(searchBy, searchString, type, res) {
   } else if (searchBy === "answerId") {
     queryObj = {"data.question.answers.id": {$in: [searchString]}}
   } else if (searchBy === "wordId") {
-    queryObj = {"data.question.wordId": searchString};
+    queryObj = {"data.word.id": searchString};
   } else if (searchBy === "word") {
     queryObj = {"data.word.wordform": {"$regex": searchString, "$options": "i"}};
   } else {
