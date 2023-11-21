@@ -21,5 +21,22 @@
       ],
       "run_at": "document_end"
     }
-  ]
+  ],
+	"permissions": [
+    "declarativeNetRequest",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://membean.com/*",
+    "https://www.membean.com/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources" : [
+      {
+        "id" : "ruleset_1",
+        "enabled": true,
+        "path": "rules_1.json"
+      }
+    ]
+  }
 }
