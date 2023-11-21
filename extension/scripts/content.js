@@ -48,8 +48,14 @@ function highlight() {
   .then(q => {
     const choices = document.querySelectorAll("li.choice");
     if (choices.length === 0) {
-      alert(q[0]?.data.question.answer);
-    } else {
+      alert(q[0]?.data.question?.answer);
+    } 
+    else if (q[0]?.data.question.answer == null) {
+      fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/word/?by=wordId&search=${q[0]?.data.question.word}`)
+      .then(res => res.json())
+      .then(wd => alert(wd[0]?.data.word.wordform))
+    }
+    else {
       [...choices].forEach(choice => {
         if (choice.innerText.toLowerCase() === q[0]?.data.question.answer.toLowerCase()) {
           choice.style.backgroundColor = "#c6fbc8";
@@ -64,15 +70,16 @@ function cancelListener(e) {
   e.stopImmediatePropagation();
 }
 
-const quizBody = document.querySelector("#assessment-iframe").contentDocument.querySelector("body");
-quizBody.addEventListener("contextmenu", cancelListener)
-quizBody.addEventListener("focus", cancelListener)
-quizBody.addEventListener("blur", cancelListener)
-quizBody.addEventListener("copy", cancelListener)
-quizBody.addEventListener("mousedown", cancelListener)
-quizBody.addEventListener("mouseup", cancelListener)
-quizBody.addEventListener("mouseout", cancelListener)
-quizBody.addEventListener("mouseover", cancelListener)
-
+const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
+if (quizBody) {
+  quizBody.addEventListener("contextmenu", cancelListener)
+  quizBody.addEventListener("focus", cancelListener)
+  quizBody.addEventListener("blur", cancelListener)
+  quizBody.addEventListener("copy", cancelListener)
+  quizBody.addEventListener("mousedown", cancelListener)
+  quizBody.addEventListener("mouseup", cancelListener)
+  quizBody.addEventListener("mouseout", cancelListener)
+  quizBody.addEventListener("mouseover", cancelListener)
+}
 
 // todo: document.querySelector("#assessment-iframe").contentDocument.querySelectorAll("ul > li:nth-child(1) input[value]")
