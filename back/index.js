@@ -1,6 +1,7 @@
 const express = require('express');
-const query = require("./db");
 const cors = require("cors");
+const handleRequest = require("./requestHandler");
+const path = require("path");
 
 const app = express();
 
@@ -18,50 +19,13 @@ app.use((err, _req, res, next) => {
 // middleware to allow cross origin requests
 app.use(cors());
 
-async function handleRequest(searchBy, searchString, type, res) {
-  if (searchBy.length === 0 || searchString.length === 0) {
-    res.status(400).send({status: 400, message: "One or more empty request parameters"});
-    return;
-  }
-
-  let queryObj;
-  if (searchBy === "qid") {
-    queryObj = {"data.question.id": searchString};
-  } else if (searchBy === "text") {
-    queryObj = {"data.question.text": {"$regex": searchString, "$options": "i"}};
-  } else if (searchBy === "answerId") {
-    queryObj = {"data.question.answers.id": {$in: [searchString]}}
-  } else if (searchBy === "wordId") {
-    queryObj = {"data.question.wordId": searchString};
-  } else if (searchBy === "word") {
-    queryObj = {"data.word.wordform": {"$regex": searchString, "$options": "i"}};
-  } else {
-    res.status(400).send({status: 400, message: "Invalid search parameter"});
-    return;
-  }
-
-  let collection;
-  if (type === "questions") {
-    collection = "normal_questions";
-  } else if (type === "quiz") {
-    collection = "quiz_questions";
-  } else if (type === "word") {
-    collection = "words";
-  } else {
-    res.status(400).send({status: 400, message: "Invalid type name."});
-    return;
-  }
-
-  const [queryStatus, queryResult] = await query(queryObj, collection);
-  
-  if (!queryStatus) {
-    res.status(500).send({status: 400, message: 'Error executing query, ' + queryResult});
-  }
-  else {
-    res.set("Access-Control-Allow-Origin", "*");
-    res.json(queryResult);
-  }
-}
+// front page
+app.get('/', async (_req, res) => {
+  res.sendFile(path.join(__dirname, "./frontPage/index.html"));
+})
+app.get('/frontPage/script.js', async (_req, res) => {
+  res.sendFile(path.join(__dirname, "./frontPage/script.js"));
+})
 
 /**
  * POST with the following structure
@@ -72,7 +36,7 @@ async function handleRequest(searchBy, searchString, type, res) {
  * body: {
  *  type: "word" | "quiz" | "questions",
  *  query: {
- *    "by": "qid" | "text" | "wordId" | "word",
+ *    "by": "qid" | "text" | "answerId" | "wordId" | "word",
  *    "search": ""
  *  }
  * }
@@ -92,11 +56,11 @@ app.get('/api/v1/get/:type/', async (req, res) => {
   try {
     await handleRequest(req.query.by, decodeURIComponent(req.query.search), req.params.type, res);
   } catch (err) {
-    return res.status(400).send({ status: 400, message: "Bad request format" + err }); 
+    return res.status(400).send({ status: 400, message: "Bad request format: " + err }); 
   }
 });
 
-
+// on vps, it requires port 8080, so just making that a variable
 app.listen(process.env.PORT, () => {
   console.log('Server is running on port 3000');
 });
