@@ -11,7 +11,8 @@ Why is it possible? Well, normally a website like this will do some sort of API 
 
 ## How to install
 Because I don't want to spend the effort to upload it onto Google, here's the steps to install the files directly:
-- Download as ZIP, then unzip the file. Or clone the repo.
+- Goto "Releases" [or click here](https://github.com/C20H12/Soysauce/releases).
+- Download the latest release .zip file
 - Goto [chrome://extensions/](chrome://extensions/) 
 - Top-right corner, enable "Developer mode"
 - Click "Load unpacked" and choose the folder that contains this extension.
