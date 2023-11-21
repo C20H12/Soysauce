@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soysauce API Lookup</title>
+  <script src="./frontPage/script.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    fieldset {
+      margin: 0 auto;
+      padding: 1rem;
+      width: 50vw;
+      border: 3px solid #4CAF50;
+      font-size: 1.2rem;
+    }
+    label {
+      display: inline-block;
+      width: 5rem;
+      margin: .5rem;
+    }
+    .inputArea > div {
+      display: grid;
+      grid-template-columns: 8rem  auto;
+      margin: .5rem;
+    }
+    #goBtn {
+      width: 100%;
+      display: block;
+      margin: 1rem auto;
+      padding: .5rem;
+      font-size: 1.2rem;
+      border: 1px solid #000000;
+      background-color: #a5a5a5;
+      color: aliceblue;
+    }
+    #goBtn:hover {
+      background-color: #4CAF50;
+    }
+    .question {
+      border: 1px solid black;
+      margin: .5rem 1rem;
+      padding: .5rem;  
+    }
+    .question > h2 {
+      margin: .2rem auto;
+    }
+    .question > .question-id{
+      font-size: .8em;
+      margin: 0;
+    }
+    .question > .question-answer {
+      margin: 0;
+    }
+    .answer {
+      list-style-type: none;
+    }
+    .answer > .answer-true {
+      background-color: #ccffcc;
+      width: fit-content;
+    }
+    .answer > .answer-false {
+      background-color: #ffdcdc;
+      width: fit-content;
+    }
+    .answer > .answer-id {
+      font-size: .8em;
+      margin: 0;
+    }
+  
+  </style>
+</head>
+<body>
+  <fieldset class="inputArea">
+    <legend>Search Parameters</legend>
+    <div>
+      <label for="searchType">Type:</label>
+      <select id="searchType">
+        <option value="questions">questions</option>
+        <option value="quiz">quiz</option>
+        <option value="word">word</option>
+      </select>
+    </div>
+    <div>
+      <label for="searchMethod">Method:</label>
+      <select id="searchMethod">
+        <option value="text">text</option>
+        <option value="answerId">answerId</option>
+        <option value="qid">qid</option>
+        <option value="wordId">wordId</option>
+        <option value="word">word</option>
+      </select>
+    </div>
+    <div>
+      <label for="searchString">String</label>
+      <input type="text" id="searchString">
+    </div>
+    <button id="goBtn">GO</button>
+  </fieldset>
+  <fieldset class="outputArea">
+    <legend>Output</legend>
+    <div></div>
+  </fieldset>
+</body>
+</html>
