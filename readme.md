@@ -16,3 +16,6 @@ Because I don't want to spend the effort to upload it onto Google, here's the st
 - Goto [chrome://extensions/](chrome://extensions/) 
 - Top-right corner, enable "Developer mode"
 - Click "Load unpacked" and choose the folder that contains this extension.
+
+## Disclaimer
+Use this software at your own risk. The author is not responsible for any consequences, direct or indirect, arising from the use of this software. User discretion is advised.
