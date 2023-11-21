@@ -47,14 +47,23 @@ function highlight() {
   .then(res => res.json())
   .then(q => {
     const choices = document.querySelectorAll("li.choice");
+    // text input question
     if (choices.length === 0) {
       alert(q[0]?.data.question?.answer);
     } 
+    // constellation 
     else if (q[0]?.data.question.answer == null) {
-      fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/word/?by=wordId&search=${q[0]?.data.question.word}`)
+      fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/word/?by=wordId&search=${q[0]?.data.question.wordId}`)
       .then(res => res.json())
-      .then(wd => alert(wd[0]?.data.word.wordform))
+      .then(wd => {
+        [...choices].forEach(choice => {
+          if (choice.innerText.toLowerCase() === wd[0]?.data.word.wordform.toLowerCase()) {
+            choice.style.backgroundColor = "#c6fbc8";
+          }
+        })
+      })
     }
+    // normal question
     else {
       [...choices].forEach(choice => {
         if (choice.innerText.toLowerCase() === q[0]?.data.question.answer.toLowerCase()) {
@@ -70,6 +79,7 @@ function cancelListener(e) {
   e.stopImmediatePropagation();
 }
 
+// only applies to quiz document
 const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
 if (quizBody) {
   quizBody.addEventListener("contextmenu", cancelListener)
