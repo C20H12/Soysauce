@@ -18,9 +18,9 @@ async function handleRequest(searchBy, searchString, type, res) {
   if (searchBy === "qid") {
     queryObj = {"data.question.id": searchString};
   } else if (searchBy === "text") {
-    queryObj = {"$text": {"$search": searchString}};
+    queryObj = {"$text": {"$search": `"${searchString}"`}};
   } else if (searchBy === "answerId") {
-    queryObj = {"data.question.answers.id": {$in: [searchString]}}
+    queryObj = {"data.question.answers.id": {"$in": [searchString]}}
   } else if (searchBy === "wordId") {
     queryObj = {"data.word.id": searchString};
   } else if (searchBy === "word") {
