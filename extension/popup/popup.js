@@ -1,12 +1,15 @@
 // force bypass button
-const enabledCheckbox = document.querySelector("[data-ctl]");
+const skipBtn = document.querySelector("[data-ctl]");
 
 // highlighting button
 const hlBtn = document.querySelector("[data-hl]");
 
+// highlighting quiz button
+const hlqBtn = document.querySelector("[data-hlq]");
+
 
 // whenever the btns are clicked
-enabledCheckbox.addEventListener("click", async () => {
+skipBtn.addEventListener("click", async () => {
   sendStatus("ctl")
 })
 
@@ -14,19 +17,29 @@ hlBtn.addEventListener("click", async () => {
   sendStatus("hl");
 })
 
+hlqBtn.addEventListener("click", async () => {
+  sendStatus("hlq");
+})
+
 
 async function sendStatus(name) {
-  // need to get the tab's id to send the message to
-  const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+  try {
 
-  if (!tab?.id) {
-    return;
-  }
+    
+    // need to get the tab's id to send the message to
+    const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
 
-  const response = await chrome.tabs.sendMessage(tab.id, `enable-${name}`);
+    if (!tab?.id) {
+      return;
+    }
 
-  // should not happen but might happen
-  if (!response) {
-    console.error("failed");
+    const response = await chrome.tabs.sendMessage(tab.id, `enable-${name}`);
+
+    // should not happen but might happen
+    if (!response) {
+      console.error("failed");
+    }
+  } catch (e) {
+    alert("This page is not supported.")
   }
 }
