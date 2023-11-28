@@ -16,11 +16,15 @@
         margin: 10px 0;
         color: #4CAF50;
       }
-      p {
+      span {
+        display: block;
         font-size: 12px;
-        font-style: italic;
         font-weight: bold;
         width: 12rem;
+        margin-top: .1rem;
+      }
+      kbd {
+        font-family: monospace;
       }
       button {
         background-color: #4CAF50;
@@ -42,17 +46,19 @@
   <body>
     <h1>Soysauce</h1>
     <p>Made from obliterated beans</p>
-    <p>Key Shortcut: \</p>
     <div>
       <label>Force Bypass:</label>
+      <span>Key Shortcut: <kbd>\</kbd></span>
       <button data-ctl>Skip Question</button>
     </div>
     <div>
       <label>Highlighting: </label>
+      <span>Key Shortcut: <kbd>]</kbd></span>
       <button data-hl>Show Answer</button>
     </div>
     <div>
       <label>Highlighting (Quiz): </label>
+      <span>Key Shortcut: <kbd>[</kbd></span>
       <button data-hlq>Show Answers</button>
     </div>
     <script src="./popup.js"></script>
