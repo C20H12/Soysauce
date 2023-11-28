@@ -56,11 +56,13 @@ function forceBypass() {
 }
 
 function highlight() {
+  // get the current question's Id
   const qid = document.querySelector("[data-qid]")?.dataset.qid;
   if (!qid) {
     alert("Current page not supported.");
     return;
   }
+  // get question from DB
   fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/questions/?by=qid&search=${qid}`)
   .then(res => res.json())
   .then(q => {
@@ -103,8 +105,8 @@ function highlightQuizQuestions() {
   .forEach(async (questionChoices, i) => {
     const questionChoiceTexts = questionChoices.querySelectorAll("li > label");
 
-    // remove highlighting if already exists, then exit
-    if (questionChoiceTexts.find(lbl => lbl.hasAttribute("style"))){
+    // remove highlighting if already exists, then exit fn
+    if ([...questionChoiceTexts].find(lbl => lbl.hasAttribute("style"))){
       questionChoiceTexts.forEach(choice => {
         choice.removeAttribute("style");
       })
@@ -117,25 +119,31 @@ function highlightQuizQuestions() {
     const questionFetched = await fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/questions/?by=answerId&search=${optionAnswerId}`);
     const questionParsed = await questionFetched.json();
 
+    // multiple possible answers, this will be an array
     let answer = null;
 
-    // must be a fill the blank question - get the question text, search, then get the wordId, and get the wordform
+    // answerId lookup failed:  must be a fill the blank question - 
+    // get the question text, search, use answer if exists, else get the wordId, then get the wordform
     if (questionParsed.length === 0) {
       const questionTextElem = firstInput.parentElement.parentElement.parentElement.previousElementSibling;
       const blankQuestionText = questionTextElem.innerHTML.slice(1, -2).replace(`<span class="blank"></span>`, "___");
-      console.log(blankQuestionText)
       const blankQuestionFetched = await fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/questions/?by=text&search=${blankQuestionText}`);
       const blankQuestionParsed = await blankQuestionFetched.json();
       if (!blankQuestionParsed[0]) return;
 
-      const blankQuestionWordId = blankQuestionParsed[0].data.question.wordId;
-      const word = await fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/word/?by=wordId&search=${blankQuestionWordId}`);
-      const wordParsed = await word.json();
-      const wordform = wordParsed[0]?.data.word.wordform;
-      if (!wordform) return;
-
-      answer = [wordform];
+      if (blankQuestionParsed[0].data.question.answer) {
+        answer = [blankQuestionParsed[0].data.question.answer];
+      } else { 
+        const blankQuestionWordId = blankQuestionParsed[0].data.question.wordId;
+        const word = await fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/word/?by=wordId&search=${blankQuestionWordId}`);
+        const wordParsed = await word.json();
+        const wordform = wordParsed[0]?.data.word.wordform;
+        if (!wordform) return;
+        
+        answer = [wordform];
+      }
     } 
+    // question starts with Select...
     // must be a multi select question - get the corresonding ID in the quiz DB, then compare isCorrect hasings
     else if (questionParsed[0]?.data.question.text.startsWith("Select")) {
       const quizFetched = await fetch(`https://orca-app-fu96x.ondigitalocean.app/api/v1/get/quiz/?by=qid&search=${questionParsed[0].data.question.id}`);
@@ -152,7 +160,7 @@ function highlightQuizQuestions() {
       answer = [questionParsed[0]?.data.question.answer];
     }
     else {
-      alert("Unknown question type for question: " + (i + 1))
+      alert("Unknown question type: question: " + (i + 1));
     }
 
     // using the answer, find the correct one(s) in the options that matches the answers, and highlight
@@ -165,21 +173,29 @@ function highlightQuizQuestions() {
   })
 }
 
+// cancel all events that could potentially used to spy on you
 function cancelListener(e) {
   e.stopImmediatePropagation();
 }
 
-// only applies to quiz document
-const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
-if (quizBody) {
-  quizBody.addEventListener("contextmenu", cancelListener);
-  quizBody.addEventListener("focus", cancelListener);
-  quizBody.addEventListener("blur", cancelListener);
-  quizBody.addEventListener("copy", cancelListener);
-  quizBody.addEventListener("mousedown", cancelListener);
-  quizBody.addEventListener("mouseup", cancelListener);
-  quizBody.addEventListener("mouseout", cancelListener);
-  quizBody.addEventListener("mouseover", cancelListener);
-  document.querySelector("#anti-cheat").value = '0';
-}
-
+// only applies to quiz document, run periodically so that it gives the user time to get past the start quiz screen
+let intervalTracker = 0;
+const intervalId = setInterval(() => {
+  const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
+  if (quizBody?.querySelector("#assessment")) {
+    quizBody.addEventListener("contextmenu", cancelListener);
+    quizBody.addEventListener("focus", cancelListener);
+    quizBody.addEventListener("blur", cancelListener);
+    quizBody.addEventListener("copy", cancelListener);
+    quizBody.addEventListener("mousedown", cancelListener);
+    quizBody.addEventListener("mouseup", cancelListener);
+    quizBody.addEventListener("mouseout", cancelListener);
+    quizBody.addEventListener("mouseover", cancelListener);
+    quizBody.querySelector("#anti-cheat").value = '0';
+    clearInterval(intervalId);
+  }
+  if (intervalTracker > 8) {
+    clearInterval(intervalId);
+  }
+  intervalTracker++;
+}, 3000);  
