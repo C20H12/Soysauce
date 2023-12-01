@@ -42,7 +42,8 @@ goBtn.addEventListener("click",async () => {
     let quizSearchResult = null;
 
     if (questionText.startsWith("Select")) {
-      quizSearchResult = await search("quiz", "qid", q.data.question.id);
+      const compareCollection = searchType.value === "quiz" ? "questions" : "quiz"
+      quizSearchResult = await search(compareCollection, "qid", q.data.question.id);
     }
 
     questionAnswers = q.data.question.answers.map((ans, i) => {
