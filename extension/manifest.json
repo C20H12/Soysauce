@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": ["scripts/utils.js", "scripts/functions.js", "scripts/content.js"],
       "matches": [
         "https://membean.com/*",
         "https://www.membean.com/*"
