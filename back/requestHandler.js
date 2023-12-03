@@ -25,6 +25,8 @@ async function handleRequest(searchBy, searchString, type, res) {
     queryObj = {"data.word.id": searchString};
   } else if (searchBy === "word") {
     queryObj = {"data.word.wordform": {"$regex": searchString, "$options": "i"}};
+  } else if (searchBy === "version") {
+    queryObj = {};
   } else {
     res.status(400).send({status: 400, message: "Invalid search parameter"});
     return;
@@ -37,6 +39,8 @@ async function handleRequest(searchBy, searchString, type, res) {
     collection = "quiz_questions";
   } else if (type === "word") {
     collection = "words";
+  } else if (type === "version") {
+    collection = "version";
   } else {
     res.status(400).send({status: 400, message: "Invalid type name."});
     return;
@@ -45,7 +49,7 @@ async function handleRequest(searchBy, searchString, type, res) {
   const [queryStatus, queryResult] = await query(queryObj, collection);
   
   if (!queryStatus) {
-    res.status(500).send({status: 400, message: 'Error executing query, ' + queryResult});
+    res.status(500).send({status: 500, message: 'Error executing query, ' + queryResult});
   }
   else {
     res.set("Access-Control-Allow-Origin", "*");

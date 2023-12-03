@@ -60,6 +60,10 @@ app.get('/api/v1/get/:type/', async (req, res) => {
   }
 });
 
+app.get('/version', async (_req, res) => {
+  await handleRequest("version", " s", "version", res);
+})
+
 // on vps, it requires port 8080, so just making that a variable
 app.listen(process.env.PORT, () => {
   console.log('Server is running on port 3000');
