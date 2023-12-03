@@ -41,11 +41,30 @@
       button:hover {
         background-color: #214622;
       }
+      a {
+        color: #4CAF50;
+        text-decoration: underline;
+        cursor: pointer;
+        margin: 1rem 0;
+        display: block;
+      }
+      p {
+        display: none;
+      }
+      a:hover {
+        color: black;
+      }
+      a:hover + p {
+        display: block;
+        font-size: .8rem;
+        font-style: italic;
+        color: gray;
+      }
     </style>
   </head>
   <body>
     <h1>Soysauce</h1>
-    <p>Made from obliterated beans</p>
+    <h4>Made from obliterated beans</h4>
     <div>
       <label>Force Bypass:</label>
       <span>Key Shortcut: <kbd>\</kbd></span>
@@ -60,6 +79,15 @@
       <label>Highlighting (Quiz): </label>
       <span>Key Shortcut: <kbd>[</kbd></span>
       <button data-hlq>Show Answers</button>
+    </div>
+    <div>
+      <label>Auto Progression (BETA): </label>
+      <span>May not answer all questions correctly, use with caution.</span>
+      <button data-auto>Toggle Autorun</button>
+    </div>
+    <div>
+      <a data-capture>Debug Capture</a>
+      <p>this will download this page's HTML which you may then use to report a bug.</p>
     </div>
     <script src="./popup.js"></script>
   </body>

@@ -1,26 +1,27 @@
 // force bypass button
-const skipBtn = document.querySelector("[data-ctl]");
-
-// highlighting button
-const hlBtn = document.querySelector("[data-hl]");
-
-// highlighting quiz button
-const hlqBtn = document.querySelector("[data-hlq]");
-
-
-// whenever the btns are clicked
-skipBtn.addEventListener("click", async () => {
-  sendStatus("ctl")
+document.querySelector("[data-ctl]").addEventListener("click", async () => {
+  sendStatus("bypass")
 })
 
-hlBtn.addEventListener("click", async () => {
+// highlighting button
+document.querySelector("[data-hl]").addEventListener("click", async () => {
   sendStatus("hl");
 })
 
-hlqBtn.addEventListener("click", async () => {
+// highlighting quiz button
+document.querySelector("[data-hlq]").addEventListener("click", async () => {
   sendStatus("hlq");
 })
 
+// debug capture button
+document.querySelector("[data-capture]").addEventListener("click", () => {
+  sendStatus("capture");
+})
+
+// auto run button
+document.querySelector("[data-auto]").addEventListener("click", () => {
+  sendStatus("auto");
+})
 
 async function sendStatus(name) {
   try {
@@ -33,7 +34,7 @@ async function sendStatus(name) {
       return;
     }
 
-    const response = await chrome.tabs.sendMessage(tab.id, `enable-${name}`);
+    const response = await chrome.tabs.sendMessage(tab.id, `${name}`);
 
     // should not happen but might happen
     if (!response) {
