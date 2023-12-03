@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Soy Sauce",
-  "version": "1.0",
+  "version": "0.3",
   "description": "Blend up the beans and make some sauce.",
   "icons": {
     "16": "assets/icon16.png",
@@ -22,9 +22,13 @@
       "run_at": "document_end"
     }
   ],
+  "background": {
+    "service_worker": "scripts/updates.js"
+  },
 	"permissions": [
     "declarativeNetRequest",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
   "host_permissions": [
     "https://membean.com/*",
