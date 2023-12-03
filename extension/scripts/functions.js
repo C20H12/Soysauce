@@ -227,29 +227,33 @@ function autoRun() {
         if (importantTags.question && importantTags.input) {
           setTimeout(() => {
             highlight(true).then(result => {
-              if (result && typeof result === "string") {
-                // fill in the answer if found
-                importantTags.input.value = result;
-                importantTags.input.dispatchEvent(new KeyboardEvent('keyup', {'key': 'Enter'}));
+              if (!result) {
+                // randomly select if answer is not found
+                importantTags.input.value = "sus".repeat(99);
               }
+              if (result && typeof result === "string") {
+                // fill in the answer if found, only 3 letters is needed
+                importantTags.input.value = result.slice(1, 4);
+              }
+              importantTags.input.dispatchEvent(new KeyboardEvent('keyup', {'key': 'Enter'}));
             })
           }, timeouts.question);
         }
-        if (importantTags.question) {
+        else if (importantTags.question) {
           setTimeout(() => {
             highlight(true).then(result => {
               if (!result) {
                 // randomly select if answer is not found
                 mutation.target.querySelectorAll("li.choice")[Math.floor(Math.random() * 3)].click();
               }
-              // click the correct choice
               if (result && typeof result === "object") {
+                // click the correct choice
                 result.click();
               }
             })
           }, timeouts.question);
         }
-        if (importantTags.word) {
+        else if (importantTags.word) {
           setTimeout(() => {
             // choose the quizlet anser, then press next
             const questionChoice = document.querySelector("#choice-section > li.choice.answer");
@@ -257,10 +261,11 @@ function autoRun() {
             importantTags.word.click();
           }, timeouts.word);
         }
-        if (importantTags.input) {
+        else if (importantTags.input) {
           setTimeout(() => {
             // get the word from the audio link, then fill it in
-            const answer = document.querySelector("#pronounce-sound")?.getAttribute("path").split("-")[1];
+            const answer = document.querySelector("#pronounce-sound")?.getAttribute("path")
+                          .split("-")[1] ?? "sus".repeat(99);
             importantTags.input.value = answer;
             importantTags.input.dispatchEvent(new KeyboardEvent('keyup', {'key': 'Enter'}));
           }, timeouts.word);
