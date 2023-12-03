@@ -27,7 +27,6 @@
   },
 	"permissions": [
     "declarativeNetRequest",
-    "tabs",
     "notifications"
   ],
   "host_permissions": [
