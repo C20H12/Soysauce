@@ -1,5 +1,4 @@
 chrome.runtime.onStartup.addListener(() => {
-  console.log(1);
   fetch("https://orca-app-fu96x.ondigitalocean.app/version")
     .then(r => r.json())
     .then(v => {
