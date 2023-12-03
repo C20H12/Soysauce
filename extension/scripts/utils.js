@@ -17,7 +17,7 @@ async function search(type, method, string) {
 }
 
 /**
- * stop all other listeners from running 
+ * stop all other listeners on this event from running 
  * @param {Event} e - eventListener callback event
  */
 function cancelListener(e) {
