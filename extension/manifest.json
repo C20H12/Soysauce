@@ -15,28 +15,19 @@
   "content_scripts": [
     {
       "js": ["scripts/utils.js", "scripts/functions.js", "scripts/content.js"],
-      "matches": [
-        "https://membean.com/*",
-        "https://www.membean.com/*"
-      ],
+      "matches": ["https://membean.com/*", "https://www.membean.com/*"],
       "run_at": "document_end"
     }
   ],
   "background": {
     "service_worker": "scripts/updates.js"
   },
-	"permissions": [
-    "declarativeNetRequest",
-    "notifications"
-  ],
-  "host_permissions": [
-    "https://membean.com/*",
-    "https://www.membean.com/*"
-  ],
+  "permissions": ["declarativeNetRequest", "notifications"],
+  "host_permissions": ["https://membean.com/*", "https://www.membean.com/*"],
   "declarative_net_request": {
-    "rule_resources" : [
+    "rule_resources": [
       {
-        "id" : "ruleset_1",
+        "id": "ruleset_1",
         "enabled": true,
         "path": "rules_1.json"
       }
