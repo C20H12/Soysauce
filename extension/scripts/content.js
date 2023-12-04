@@ -1,14 +1,7 @@
-
 // click events from the popup page and from update alert worker
 chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
-
   if (msg === "bypass") {
-    try {
-      forceBypass();
-    } 
-    catch {
-      alert("Current page not supported.")
-    }
+    forceBypass();
 
     respond(true);
   }
@@ -35,7 +28,6 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
   else{
     respond(false);
   }
-
 });
 
 // keyboard shortcuts
