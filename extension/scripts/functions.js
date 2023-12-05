@@ -124,8 +124,13 @@ function highlightQuizQuestions() {
     if (questionParsed.length === 0) {
       const questionTextElem = firstInput.parentElement.parentElement.parentElement.previousElementSibling;
       const blankQuestionText = questionTextElem.innerHTML.slice(1, -2).replace(`<span class="blank"></span>`, "___");
-      const blankQuestionParsed = await search("questions", "text", blankQuestionText);
-      if (!blankQuestionParsed[0]) return;
+      let blankQuestionParsed = await search("questions", "text", blankQuestionText);
+      if (!blankQuestionParsed[0]) {
+        // if failed, try the longer dashes one, some questions have longer ones for some reason
+        const blankQuestionText = questionTextElem.innerHTML.slice(1, -2).replace(`<span class="blank"></span>`, "___________");
+        blankQuestionParsed = await search("questions", "text", blankQuestionText);
+        if (!blankQuestionParsed[0]) return;
+      };
 
       if (blankQuestionParsed[0].data.question.answer) {
         answer = [blankQuestionParsed[0].data.question.answer];
