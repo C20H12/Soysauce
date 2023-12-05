@@ -52,11 +52,13 @@ window.addEventListener("keydown", (e) => {
 // run periodically so that it gives the user time to get past the start quiz screen
 // then removes the interval
 // cancel all events that could potentially used to spy on you
+// this removes the shortcur keys as well, so you can only use the popup to highlight the quiz
 if (document.querySelector("#assessment-iframe")) {
   let intervalTracker = 0;
   const intervalId = setInterval(() => {
     const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
     if (quizBody?.querySelector("#assessment")) {
+      document.exitFullscreen();
       quizBody.addEventListener("contextmenu", cancelListener);
       quizBody.addEventListener("focus", cancelListener);
       quizBody.addEventListener("blur", cancelListener);
