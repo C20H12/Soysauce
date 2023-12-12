@@ -224,8 +224,8 @@ function autoRun() {
         }
         // pause on each page, can be customized
         const timeouts = {
-          question: 3000,
-          word: 5000
+          question: getRandomInt(15000, 21000),
+          word: getRandomInt(40000, 60000)
         }
 
         // not new word input, just spelling questions, -- Need more testing
