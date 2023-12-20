@@ -165,7 +165,7 @@ function highlightQuizQuestions() {
     // using the answer, find the correct one(s) in the options that matches the answers, and highlight
     questionChoiceTexts.forEach(choice => {
       const choiceText = choice.innerText.trim();
-      if (answer?.includes(choiceText)) {
+      if (answer.some(ans => ans.trim() === choiceText)) {
         choice.style.backgroundColor = "#f0fff1";
       }
     })
@@ -214,6 +214,11 @@ function autoRun() {
     for (const mutation of mutationList) {
       // the loading modal is just removd, page loaded
       if (mutation.removedNodes.length === 1) {
+        // add a chance for getting a question correctly
+        if (getRandomInt(0, 100) > 95) {
+          return;
+        }
+        
         const importantTags = {
           // question with a qid, most training questions
           question: mutation.target.querySelector("[data-qid]"),
