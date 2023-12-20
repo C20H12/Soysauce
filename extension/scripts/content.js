@@ -58,7 +58,10 @@ if (document.querySelector("#assessment-iframe")) {
   const intervalId = setInterval(() => {
     const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
     if (quizBody?.querySelector("#assessment")) {
-      document.exitFullscreen();
+      if (document.fullscreenElement != null) {
+        document.exitFullscreen();
+      }
+
       quizBody.addEventListener("contextmenu", cancelListener);
       quizBody.addEventListener("focus", cancelListener);
       quizBody.addEventListener("blur", cancelListener);
