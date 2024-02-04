@@ -220,6 +220,7 @@ async function autoRun() {
 
   // get times from storage
   const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
+  const questionCorrectChance = parseInt(savedData.soysauceSavedData?.question_chance) ?? 95;
   const questionTimeoutMin = parseInt(savedData.soysauceSavedData?.question_min) ?? 10;
   const questionTimeoutMax = parseInt(savedData.soysauceSavedData?.question_max) ?? 15;
   const wordTimeoutMin = parseInt(savedData.soysauceSavedData?.word_min) ?? 40
@@ -230,7 +231,7 @@ async function autoRun() {
       // the loading modal is just removd, page loaded
       if (mutation.removedNodes.length === 1) {
         // add a chance for getting a question correctly
-        if (getRandomInt(0, 100) > 95) {
+        if (getRandomInt(0, 99) < questionCorrectChance) {
           return;
         }
         

@@ -13,6 +13,7 @@ chrome.storage.local.get(["soysauceSavedData"], async (data) => {
       word_max: 80,
       question_min: 10,
       question_max: 15,
+      question_chance: 95,
       color_question: "#f0fff1",
       color_quiz: "#f0fff1",
     }
