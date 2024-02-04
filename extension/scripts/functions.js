@@ -25,6 +25,10 @@ function forceBypass() {
  * @returns {undefined | null | HTMLElement | string}
  */
 async function highlight(useReturn = false) {
+  // get color from storage
+  const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
+  const highlightColor = savedData.soysauceSavedData?.color_question ?? "#f0fff1";
+
   // get the current question's Id
   const qid = document.querySelector("[data-qid]")?.dataset.qid;
   if (!qid) {
@@ -68,7 +72,7 @@ async function highlight(useReturn = false) {
       // some words have s or ed added to the end
       if ([choiceText, choiceText.slice(0, -1), choiceText.slice(0, -2)]
           .includes(wd[0].data.word.wordform.toLowerCase())) {
-        choice.style.backgroundColor = "#f0fff1";
+        choice.style.backgroundColor = highlightColor;
         correctChoice = choice;
       }
     })
@@ -81,7 +85,7 @@ async function highlight(useReturn = false) {
       // some words have s or ed added to the end
       if ([choiceText, choiceText.slice(0, -1), choiceText.slice(0, -2)]
           .includes(questionFound[0].data.question.answer.toLowerCase().trim())) {
-        choice.style.backgroundColor = "#f0fff1";
+        choice.style.backgroundColor = highlightColor;
         correctChoice = choice;
       }
     })
@@ -162,11 +166,15 @@ function highlightQuizQuestions() {
       alert("Unknown question type: question: " + (i + 1));
     }
 
+    // get color from storage
+    const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
+    const highlightColor = savedData.soysauceSavedData?.color_quiz ?? "#f0fff1";
+
     // using the answer, find the correct one(s) in the options that matches the answers, and highlight
     questionChoiceTexts.forEach(choice => {
       const choiceText = choice.innerText.trim();
       if (answer?.includes(choiceText)) {
-        choice.style.backgroundColor = "#f0fff1";
+        choice.style.backgroundColor = highlightColor;
       }
     })
   })
@@ -195,7 +203,7 @@ function capturePageHTML() {
 /**
  * auto progresses in the training
  */
-function autoRun() {
+async function autoRun() {
   const observed = document.querySelector("#content-wrapper");
   if (!observed) {
     alert("Current page not supported.");
@@ -210,6 +218,13 @@ function autoRun() {
     return;
   }
 
+  // get times from storage
+  const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
+  const questionTimeoutMin = parseInt(savedData.soysauceSavedData?.question_min) ?? 10;
+  const questionTimeoutMax = parseInt(savedData.soysauceSavedData?.question_max) ?? 15;
+  const wordTimeoutMin = parseInt(savedData.soysauceSavedData?.word_min) ?? 40
+  const wordTimeoutMax = parseInt(savedData.soysauceSavedData?.word_max) ?? 80;
+
   const callback = (mutationList, _observer) => {
     for (const mutation of mutationList) {
       // the loading modal is just removd, page loaded
@@ -222,10 +237,11 @@ function autoRun() {
           // word input page, spell it or after learning a new word
           input: mutation.target.querySelector("input#choice")
         }
-        // pause on each page, can be customized
+
+        // pause on each page, using the customizable time seconds
         const timeouts = {
-          question: 3000,
-          word: 5000
+          question: getRandomInt(questionTimeoutMin, questionTimeoutMax) * 1000,
+          word: getRandomInt(wordTimeoutMin, wordTimeoutMax) * 1000
         }
 
         // not new word input, just spelling questions, -- Need more testing
