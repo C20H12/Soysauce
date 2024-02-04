@@ -230,11 +230,6 @@ async function autoRun() {
     for (const mutation of mutationList) {
       // the loading modal is just removd, page loaded
       if (mutation.removedNodes.length === 1) {
-        // add a chance for getting a question correctly
-        if (getRandomInt(0, 99) < questionCorrectChance) {
-          return;
-        }
-        
         const importantTags = {
           // question with a qid, most training questions
           question: mutation.target.querySelector("[data-qid]"),
@@ -242,6 +237,12 @@ async function autoRun() {
           word: mutation.target.querySelector("#next-btn"),
           // word input page, spell it or after learning a new word
           input: mutation.target.querySelector("input#choice")
+        }
+
+        // add a chance for getting a question correctly
+        const randomNumber = getRandomInt(0, 99);
+        if (importantTags.question && randomNumber > questionCorrectChance) {
+          return;
         }
 
         // pause on each page, using the customizable time seconds
