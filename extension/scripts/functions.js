@@ -173,7 +173,7 @@ function highlightQuizQuestions() {
     // using the answer, find the correct one(s) in the options that matches the answers, and highlight
     questionChoiceTexts.forEach(choice => {
       const choiceText = choice.innerText.trim();
-      if (answer?.includes(choiceText)) {
+      if (answer.some(ans => ans.trim() === choiceText)) {
         choice.style.backgroundColor = highlightColor;
       }
     })
