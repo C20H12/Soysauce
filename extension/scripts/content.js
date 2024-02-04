@@ -25,6 +25,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
 
     respond(true);
   }
+  
   else{
     respond(false);
   }
@@ -56,9 +57,15 @@ window.addEventListener("keydown", (e) => {
 if (document.querySelector("#assessment-iframe")) {
   let intervalTracker = 0;
   const intervalId = setInterval(() => {
+    if (intervalTracker > 30) {
+      clearInterval(intervalId);
+    }
+    
     const quizBody = document.querySelector("#assessment-iframe")?.contentDocument.querySelector("body");
     if (quizBody?.querySelector("#assessment")) {
-      document.exitFullscreen();
+      if (document.fullscreenElement != null) {
+        document.exitFullscreen().catch(_e => alert("Failed to exit fullscreen."));
+      }
       quizBody.addEventListener("contextmenu", cancelListener);
       quizBody.addEventListener("focus", cancelListener);
       quizBody.addEventListener("blur", cancelListener);
@@ -70,9 +77,7 @@ if (document.querySelector("#assessment-iframe")) {
       quizBody.querySelector("#anti-cheat").value = '0';
       clearInterval(intervalId);
     }
-    if (intervalTracker > 30) {
-      clearInterval(intervalId);
-    }
+
     intervalTracker++;
   }, 3000);   
 }
