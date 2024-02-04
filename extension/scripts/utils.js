@@ -23,3 +23,13 @@ async function search(type, method, string) {
 function cancelListener(e) {
   e.stopImmediatePropagation();
 }
+
+/**
+ * get a random integer between a range
+ * @param {number} min - min
+ * @param {number} max - max
+ * @returns {number} - random integer
+ */
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
