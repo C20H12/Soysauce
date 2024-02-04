@@ -11,6 +11,12 @@
         width: fit-content;
         height: fit-content;
       }
+      div {
+        position: relative;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
       h1 {
         font-size: 18px;
         margin: 10px 0;
@@ -50,6 +56,8 @@
       }
       p {
         display: none;
+        position: absolute;
+        top: .5rem;
       }
       a:hover {
         color: black;
@@ -59,7 +67,29 @@
         font-size: .8rem;
         font-style: italic;
         color: gray;
+        border: 1px solid black;
+        background-color: white;
+        z-index: 2;
+        padding: 5px;
       }
+      div.settings {
+        border-left: 1px solid black;
+        height: 100%;
+        width: 50%;
+        padding: 1rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: none;
+      }
+      div.settings div {
+        margin: 1rem 0;
+      }
+      div.settings input {
+        width: 60%;
+        margin: 5px;
+      }
+
     </style>
   </head>
   <body>
@@ -87,7 +117,34 @@
     </div>
     <div>
       <a data-action="capture">Debug Capture</a>
-      <p>this will download this page's HTML which you may then use to report a bug.</p>
+      <p>Download this page's HTML, can be used to report a bug.</p>
+    </div>
+    <div>
+      <a data-settings="open">Settings</a>
+      <p>Additional behaviours.</p>
+    </div>
+    <div class="settings">
+      <h4>Settings:</h4>
+      <div data-setting-numbers>
+        <label>Auto Run: Wait time on word definition page</label>
+        <span>min seconds:</span> <input type="number" step="1" min="30" max="240" data-setting-property="word_min"> 
+        <span>mix seconds:</span> <input type="number" step="1" min="30" max="240" data-setting-property="word_max"> 
+      </div>
+      <div data-setting-numbers>
+        <label>Auto Run: Wait time on question pages</label>
+        <span>min seconds:</span> <input type="number" step="1" min="5" max="25" data-setting-property="question_min"> 
+        <span>mix seconds:</span> <input type="number" step="1" min="5" max="25" data-setting-property="question_max"> 
+      </div>
+      <div>
+        <label>Highlighting: Color on question pages</label>
+        <input type="color" data-setting-property="color_question"> 
+      </div>
+      <div>
+        <label>Highlighting: Color on quiz pages</label>
+        <input type="color" data-setting-property="color_quiz"> 
+      </div>
+      <button data-settings="save">Save</button>
+      <button data-settings="close">Cancel</button>
     </div>
     <script src="./popup.js"></script>
   </body>
