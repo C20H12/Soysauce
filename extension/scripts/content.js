@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
 
     respond(true);
   }
-  
+
   else{
     respond(false);
   }

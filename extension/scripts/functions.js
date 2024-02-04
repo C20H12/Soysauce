@@ -229,6 +229,11 @@ async function autoRun() {
     for (const mutation of mutationList) {
       // the loading modal is just removd, page loaded
       if (mutation.removedNodes.length === 1) {
+        // add a chance for getting a question correctly
+        if (getRandomInt(0, 100) > 95) {
+          return;
+        }
+        
         const importantTags = {
           // question with a qid, most training questions
           question: mutation.target.querySelector("[data-qid]"),
