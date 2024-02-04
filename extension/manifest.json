@@ -22,7 +22,7 @@
   "background": {
     "service_worker": "scripts/updates.js"
   },
-  "permissions": ["declarativeNetRequest", "notifications"],
+  "permissions": ["declarativeNetRequest", "notifications", "storage"],
   "host_permissions": ["https://membean.com/*", "https://www.membean.com/*"],
   "declarative_net_request": {
     "rule_resources": [
