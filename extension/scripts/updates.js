@@ -4,6 +4,7 @@ chrome.runtime.onStartup.addListener(() => {
     .then(v => {
       const currentVersion = chrome.runtime.getManifest().version;
       if (v[0].extension === currentVersion) return;
+      
       chrome.notifications.create("soysauce-update", {
         type: "basic",
         title: "Soy Sauce Update Alert",
@@ -12,5 +13,9 @@ chrome.runtime.onStartup.addListener(() => {
         iconUrl: chrome.runtime.getURL("assets/icon128.png"),
         requireInteraction: true
       });
+
+      chrome.notifications.onClicked.addListener(() => {
+        chrome.tabs.create({url: "https://github.com/C20H12/Soysauce"})
+      })
     })
 });
