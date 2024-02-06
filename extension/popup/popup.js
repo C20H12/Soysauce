@@ -1,3 +1,4 @@
+// handle the action buttons that communicate the context page
 document.querySelectorAll("[data-action]").forEach(action => {
   action.addEventListener("click", () => {
     const { action: name } = action.dataset;
@@ -65,7 +66,7 @@ document.querySelector("[data-settings=save]").addEventListener('click', async (
       return;
     }
     if (minInputValue > maxInputValue) {
-      alert("Error: max is less than min at one or more sections");
+      alert("Error: max is less than min in one or more sections");
       return;
     }
     if (minInputValue < parseInt(minInput.min) || minInputValue > parseInt(minInput.max) ) {
