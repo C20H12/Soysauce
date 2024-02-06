@@ -32,21 +32,32 @@ chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
 });
 
 // keyboard shortcuts
-window.addEventListener("keydown", (e) => {
-  if (e.key === "\\") {
-    forceBypass();
-  }
-  if (e.key === "]") {
-    highlight();
-  }
-  if (e.key === "[") {
-    highlightQuizQuestions();
-  }
-  if (["\\", "]", "["].includes(e.key)) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-})
+(async () => {
+  // get keys from storage
+  const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
+  const keyBypass = savedData.soysauceSavedData?.keys_bypass ?? "\\";
+  const keyHl = savedData.soysauceSavedData?.keys_hl ?? "]";
+  const keyHlq = savedData.soysauceSavedData?.keys_hlq ?? "[";
+  const keyAuto = savedData.soysauceSavedData?.keys_auto ?? "=";
+  window.addEventListener("keydown", (e) => {
+    if (e.key === keyBypass) {
+      forceBypass();
+    }
+    if (e.key === keyHl) {
+      highlight();
+    }
+    if (e.key === keyHlq) {
+      highlightQuizQuestions();
+    }
+    if (e.key === keyAuto) {
+      autoRun();
+    }
+    if ([keyBypass, keyHl, keyHlq, keyAuto].includes(e.key)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  })
+})()
 
 
 // only applies to quiz document, 

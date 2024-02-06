@@ -11,8 +11,8 @@
         width: fit-content;
         height: fit-content;
       }
-      div {
-        position: relative;
+      div.main {
+        width: 12rem;
       }
       body::-webkit-scrollbar {
         display: none;
@@ -21,16 +21,6 @@
         font-size: 18px;
         margin: 10px 0;
         color: #4CAF50;
-      }
-      span {
-        display: block;
-        font-size: 12px;
-        font-weight: bold;
-        width: 12rem;
-        margin-top: .1rem;
-      }
-      kbd {
-        font-family: monospace;
       }
       button {
         background-color: #4CAF50;
@@ -46,6 +36,9 @@
       }
       button:hover {
         background-color: #214622;
+      }
+      div.ui-small {
+        position: relative;
       }
       a {
         color: #4CAF50;
@@ -76,11 +69,12 @@
         border-left: 1px solid black;
         height: 100%;
         width: 50%;
-        padding: 1rem;
+        padding: 1rem 1rem 3rem 1rem;
         position: absolute;
         right: 0;
         top: 0;
         display: none;
+        overflow-y: scroll;
       }
       div.settings div {
         margin: 1rem 0;
@@ -89,49 +83,53 @@
         width: 60%;
         margin:.3px  5px;
       }
+      div.settings span {
+        display: block;
+        font-weight: bold;
+        font-size: .8rem;
+      }
 
     </style>
   </head>
   <body>
-    <h1>Soysauce</h1>
-    <h4>Made from obliterated beans</h4>
-    <div>
-      <label>Force Bypass:</label>
-      <span>Key Shortcut: <kbd>\</kbd></span>
-      <button data-action="bypass">Skip Question</button>
+    <div class="main">
+      <h1>Soysauce</h1>
+      <h4>Made from obliterated beans</h4>
+      <div>
+        <label>Force Bypass:</label>
+        <button data-action="bypass">Skip Question</button>
+      </div>
+      <div>
+        <label>Highlighting: </label>
+        <button data-action="hl">Show Answer</button>
+      </div>
+      <div>
+        <label>Highlighting (Quiz): </label>
+        <button data-action="hlq">Show Answers</button>
+      </div>
+      <div>
+        <label>Auto Progression: </label>
+        <button data-action="auto">Toggle Autorun</button>
+      </div>
+      <div class="ui-small">
+        <a data-action="capture">Debug Capture</a>
+        <p>Download this page's HTML, can be used to report a bug.</p>
+      </div>
+      <div class="ui-small">
+        <a data-settings="open">Settings</a>
+        <p>Additional behaviours.</p>
+      </div>
     </div>
-    <div>
-      <label>Highlighting: </label>
-      <span>Key Shortcut: <kbd>]</kbd></span>
-      <button data-action="hl">Show Answer</button>
-    </div>
-    <div>
-      <label>Highlighting (Quiz): </label>
-      <span>Key Shortcut: <kbd>[</kbd></span>
-      <button data-action="hlq">Show Answers</button>
-    </div>
-    <div>
-      <label>Auto Progression (BETA): </label>
-      <span>May not answer all questions correctly, use with caution.</span>
-      <button data-action="auto">Toggle Autorun</button>
-    </div>
-    <div>
-      <a data-action="capture">Debug Capture</a>
-      <p>Download this page's HTML, can be used to report a bug.</p>
-    </div>
-    <div>
-      <a data-settings="open">Settings</a>
-      <p>Additional behaviours.</p>
-    </div>
+
     <div class="settings">
       <h4>Settings:</h4>
       <div data-setting-numbers>
-        <label>Auto Run: Wait time on word definition page</label>
+        <label>Auto Run: Wait time on definition</label>
         <span>min seconds:</span> <input type="number" step="1" min="30" max="240" data-setting-property="word_min"> 
         <span>max seconds:</span> <input type="number" step="1" min="30" max="240" data-setting-property="word_max"> 
       </div>
       <div data-setting-numbers>
-        <label>Auto Run: Wait time on question pages</label>
+        <label>Auto Run: Wait time on question</label>
         <span>min seconds:</span> <input type="number" step="1" min="5" max="25" data-setting-property="question_min"> 
         <span>max seconds:</span> <input type="number" step="1" min="5" max="25" data-setting-property="question_max"> 
       </div>
@@ -140,15 +138,33 @@
         <span>percentage:</span> <input type="number" step="1" min="1" max="100" data-setting-property="question_chance"> 
       </div>
       <div>
-        <label>Highlighting: Color on question pages</label>
+        <label>Highlighting: Color (question)</label>
         <input type="color" data-setting-property="color_question"> 
       </div>
       <div>
-        <label>Highlighting: Color on quiz pages</label>
+        <label>Highlighting: Color (quiz)</label>
         <input type="color" data-setting-property="color_quiz"> 
+      </div>
+      <div>
+        <label>Hotkeys: Force bypass</label>
+        <span>Key:</span><input type="text" data-setting-property="keys_bypass"> 
+      </div>
+      <div>
+        <label>Hotkeys: Highlighting (question)</label>
+        <span>Key:</span><input type="text" data-setting-property="keys_hl"> 
+      </div>
+      <div>
+        <label>Hotkeys: Highlighting (quiz)</label>
+        <span>Key:</span><input type="text" data-setting-property="keys_hlq"> 
+      </div>
+      <div>
+        <label>Hotkeys: Toggle auto run</label>
+        <span>Key:</span><input type="text" data-setting-property="keys_auto"> 
       </div>
       <button data-settings="save">Save</button>
       <button data-settings="close">Cancel</button>
+      <div>
+      </div>
     </div>
     <script src="./popup.js"></script>
   </body>

@@ -16,11 +16,16 @@ chrome.storage.local.get(["soysauceSavedData"], async (data) => {
       question_chance: 95,
       color_question: "#f0fff1",
       color_quiz: "#f0fff1",
+      keys_bypass: "\\",
+      keys_hl: "]",
+      keys_hlq: "[",
+      keys_auto: "=",
     }
     await chrome.storage.local.set({ soysauceSavedData: defaultData });
   }
 });
 
+// open the settings menu
 document.querySelector("[data-settings=open]").addEventListener('click', async () => {
   // show settings area
   document.querySelector("div.settings").style.display = "block";
@@ -32,12 +37,22 @@ document.querySelector("[data-settings=open]").addEventListener('click', async (
   });
 })
 
+// handle the hotkey inputs
+document.querySelectorAll("[data-setting-property*=keys]").forEach(keyInput => {
+  keyInput.addEventListener("keydown", e => {
+    e.preventDefault();
+    e.target.value = e.key;
+  })
+})
+
+// close the menu
 document.querySelector("[data-settings=close]").addEventListener('click', async () => {
   // close settings area
   document.querySelector("div.settings").style.display = "none";
   document.body.style.width = 'fit-content';
 })
 
+// save the menu
 document.querySelector("[data-settings=save]").addEventListener('click', async () => {
   // verify values
   for (const section of document.querySelectorAll("[data-setting-numbers]")) {
@@ -57,6 +72,13 @@ document.querySelector("[data-settings=save]").addEventListener('click', async (
       alert(`Error: at ${maxInput.dataset.settingProperty},  must be between ${maxInput.min} and ${maxInput.max}`);
       return;
     }
+  }
+
+  const allKeyInputFields = [...document.querySelectorAll("[data-setting-property*=keys]")]
+                            .map(field => field.value);
+  if (new Set(allKeyInputFields).size !== allKeyInputFields.length) {
+    alert("Error: duplicates in one or more hotkey fields");
+    return;
   }
 
   // save data from the input fields
