@@ -60,6 +60,10 @@ document.querySelector("[data-settings=save]").addEventListener('click', async (
     const maxInput = section.querySelector("input[data-setting-property*=_max]");
     const minInputValue = parseInt(minInput.value);
     const maxInputValue = parseInt(maxInput.value);
+    if (isNaN(minInputValue) || isNaN(maxInputValue)) {
+      alert("Error: one or more fields are not numbers");
+      return;
+    }
     if (minInputValue > maxInputValue) {
       alert("Error: max is less than min at one or more sections");
       return;
