@@ -220,11 +220,11 @@ async function autoRun() {
 
   // get times from storage
   const savedData = await chrome.storage.local.get(["soysauceSavedData"]);
-  const questionCorrectChance = parseInt(savedData.soysauceSavedData?.question_chance) ?? 95;
-  const questionTimeoutMin = parseInt(savedData.soysauceSavedData?.question_min) ?? 10;
-  const questionTimeoutMax = parseInt(savedData.soysauceSavedData?.question_max) ?? 15;
-  const wordTimeoutMin = parseInt(savedData.soysauceSavedData?.word_min) ?? 40
-  const wordTimeoutMax = parseInt(savedData.soysauceSavedData?.word_max) ?? 80;
+  const questionCorrectChance = parseInt(savedData.soysauceSavedData?.question_chance ?? 95);
+  const questionTimeoutMin = parseInt(savedData.soysauceSavedData?.question_min ?? 10);
+  const questionTimeoutMax = parseInt(savedData.soysauceSavedData?.question_max ?? 15);
+  const wordTimeoutMin = parseInt(savedData.soysauceSavedData?.word_min ?? 40);
+  const wordTimeoutMax = parseInt(savedData.soysauceSavedData?.word_max ?? 80);
 
   const callback = (mutationList, _observer) => {
     for (const mutation of mutationList) {
