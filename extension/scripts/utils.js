@@ -6,7 +6,7 @@
  * @returns {object[] | undefined}
  */
 async function search(type, method, string) {
-  const url = `https://orca-app-fu96x.ondigitalocean.app/api/v1/get/${type}/?by=${method}&search=${string}`;
+  const url = `${BACKEND_URL}/api/v1/get/${type}/?by=${method}&search=${string}`;
   try {
     const response = await fetch(url);
     const responseJson = await response.json();
