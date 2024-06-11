@@ -23,7 +23,7 @@
 ![tools](./guide_images/tools.png)
 ### Start the server
 1. Navigate to `C:\` and create a folder named `data`, then create a folder named `db` inside.
-1. Now you are ready to initiate the server. Navigate to `C:\Program Files\MongoDB\Server\7.0\bin\` and run `mongod.exe`. The output window should stay open, and connecting via MongoDB Compass should result in no errors. If that is not the case, check if step 6 is done correctly.
+1. Now you are ready to initiate the server. Navigate to `C:\Program Files\MongoDB\Server\7.0\bin\` and run `mongod.exe`. The output window should stay open, and connecting via MongoDB Compass should result in no errors. If that is not the case, check if step 1 is done correctly.
 1. If you close the output window, `mongod` will be terminated and the server will stop running. To keep the server alive, we can enable the MongoDB service. Open Windows Services and find the MongoDB Server task that should be created for you. Right click on it and select "start".
 1. Try connecting to the database via MongoDB Compass. It should succeed without errors.  
 
@@ -38,7 +38,7 @@ Service
 ![serv](./guide_images/serv.png)
 
 ### Import the questions data
-1. Open an instance of a shell, run the following command. Change the port to your port if it is modified.
+1. Open an instance of a shell, run the following command. If you did not add the tools to the system's PATH, you would need the full path to mongorestore. Change the port to your port if it is modified.
 ```
 mongorestore --uri "mongodb://localhost:27017" "<Yout_Path>\Soysauce-main\questions"
 ```
