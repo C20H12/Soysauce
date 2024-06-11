@@ -1,1 +1,1 @@
-const BACKEND_URL = "https://orca-app-fu96x.ondigitalocean.app";
+const BACKEND_URL = "http://localhost:3000";

@@ -6,7 +6,6 @@ const disp = document.querySelector(".outputArea>div");
 
 async function search(type, method, string) {
   const url = `${window.location.href}api/v1/get/${type}/?by=${method}&search=${string}`;
-  console.log(url)
   try {
     const response = await fetch(url);
     const responseJson = await response.json();
