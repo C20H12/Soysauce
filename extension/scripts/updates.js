@@ -1,5 +1,7 @@
+importScripts("./url.js");
+
 chrome.runtime.onStartup.addListener(() => {
-  fetch("https://orca-app-fu96x.ondigitalocean.app/version")
+  fetch(BACKEND_URL + "/version")
     .then(r => r.json())
     .then(v => {
       const currentVersion = chrome.runtime.getManifest().version;
