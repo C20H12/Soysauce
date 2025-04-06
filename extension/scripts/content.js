@@ -92,3 +92,20 @@ if (document.querySelector("#assessment-iframe")) {
     intervalTracker++;
   }, 3000);   
 }
+
+
+// only apply to front page, remove the check for extensions interval
+// how to fight intervals? with more intervals ofc...
+let tries = 0;
+const remvoeExtDetectInt = setInterval(() => {
+  if (tries > 30) {
+    clearInterval(remvoeExtDetectInt);
+  }
+  tries++;
+  // Get a reference to the last interval + 1
+  const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
+  // Clear any timeout/interval up to that id
+  for (let i = 1; i < intervalId; i++) {
+    window.clearInterval(i);
+  }
+}, 500);
